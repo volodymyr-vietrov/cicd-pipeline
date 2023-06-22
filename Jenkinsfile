@@ -27,6 +27,7 @@ pipeline {
           docker build -t nodemain:v1.0
         '''
       }
+    }
     stage('Build Image - dev') {
       when {
         branch "dev"
