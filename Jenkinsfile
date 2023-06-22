@@ -13,7 +13,7 @@ pipeline {
     }
     stage('Test') {
       steps {
-        ssh '''
+        sh '''
           npm test
         '''
       }
@@ -23,7 +23,7 @@ pipeline {
         branch "main"
       }
       steps {
-        ssh '''
+        sh '''
           docker build -t nodemain:v1.0
         '''
       }
@@ -33,7 +33,7 @@ pipeline {
         branch "dev"
       }
       steps {
-        ssh '''
+        sh '''
           docker build -t nodedev:v1.0
         '''
       }
