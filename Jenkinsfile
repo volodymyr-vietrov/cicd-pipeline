@@ -11,7 +11,7 @@ pipeline {
         '''
       }
     }
-    stage('Test) {
+    stage('Test') {
       steps {
         ssh '''
           npm test
