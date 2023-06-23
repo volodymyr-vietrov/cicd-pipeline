@@ -54,10 +54,10 @@ pipeline {
       steps {
         sh '''
            echo "Stopping all runnign containers"
-           docker kill $(docker container ls --filter ancestor=nodemain:v1.0 --format={{.ID}})
+           docker kill $(docker container ls --filter ancestor=nodemain:v1.0 --format={{.ID}}) || echo Failed with code $?
            
            echo "Removing all containers"
-           docker container rm $(docker container ls -a --filter ancestor=nodemain:v1.0 --format={{.ID}})
+           docker container rm $(docker container ls -a --filter ancestor=nodemain:v1.0 --format={{.ID}}) || echo Failed with code $?
         '''
         sh '''
           docker run -d -p 3000:3000 nodemain:v1.0
@@ -71,10 +71,10 @@ pipeline {
       steps {
         sh '''
            echo "Stopping all runnign containers"
-           docker kill $(docker container ls --filter ancestor=nodedev:v1.0 --format={{.ID}})
+           docker kill $(docker container ls --filter ancestor=nodedev:v1.0 --format={{.ID}}) || echo Failed with code $?
            
            echo "Removing all containers"
-           docker container rm $(docker container ls -a --filter ancestor=nodedev:v1.0 --format={{.ID}})
+           docker container rm $(docker container ls -a --filter ancestor=nodedev:v1.0 --format={{.ID}}) || echo Failed with code $?
         '''
         sh '''
           docker run -d -p 3001:3000 nodedev:v1.0
