@@ -7,7 +7,7 @@ pipeline {
     stage('Build') {
       steps {
         sh '''
-          npm install
+          npm install --save-dev cross-env
         '''
       }
     }
@@ -35,16 +35,6 @@ pipeline {
       steps {
         sh '''
           docker build -t nodedev:v1.0
-        '''
-      }
-    }
-    stage('Dev only stage') {
-      when {
-        branch "dev*"
-      }
-      steps {
-        sh '''
-          cat README.md
         '''
       }
     }
