@@ -24,7 +24,7 @@ pipeline {
       }
       steps {
         sh '''
-          docker build -t nodemain:v1.0
+          docker build -t nodemain:v1.0 .
         '''
       }
     }
@@ -34,7 +34,7 @@ pipeline {
       }
       steps {
         sh '''
-          docker build -t nodedev:v1.0
+          docker build -t nodedev:v1.0 .
         '''
       }
     }
