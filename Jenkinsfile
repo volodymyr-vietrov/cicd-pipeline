@@ -4,20 +4,37 @@ pipeline {
     buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')
   }
   stages {
-    stage('Hello') {
+    stage('Build') {
       steps {
         sh '''
-          java -version
+          npm install --save-dev cross-env
         '''
       }
     }
-    stage('cat README') {
+    stage('Test') {
+      steps {
+        sh '''
+          npm test
+        '''
+      }
+    }
+    stage('Build Image - main') {
       when {
-        branch "dev*"
+        branch "main"
       }
       steps {
         sh '''
-          cat README.md
+          docker build -t nodemain:v1.0
+        '''
+      }
+    }
+    stage('Build Image - dev') {
+      when {
+        branch "dev"
+      }
+      steps {
+        sh '''
+          docker build -t nodedev:v1.0
         '''
       }
     }
