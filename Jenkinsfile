@@ -27,6 +27,9 @@ pipeline {
       }
       steps {
         sh '''
+           cp /data/logo_prod.svg ./src/logo.svg
+        '''
+        sh '''
           docker build -t nodemain:v1.0 .
         '''
       }
@@ -36,6 +39,9 @@ pipeline {
         branch "dev"
       }
       steps {
+        sh '''
+           cp /data/logo_dev.svg ./src/logo.svg
+        '''
         sh '''
           docker build -t nodedev:v1.0 .
         '''
@@ -47,6 +53,13 @@ pipeline {
       }
       steps {
         sh '''
+           echo "Stopping all runnign containers"
+           docker kill $(docker container ls --filter ancestor=nodemain:v1.0 --format={{.ID}})
+           
+           echo "Removing all containers"
+           docker container rm $(docker container ls -a --filter ancestor=nodemain:v1.0 --format={{.ID}})
+        '''
+        sh '''
           docker run -d -p 3000:3000 nodemain:v1.0
         '''
       }
@@ -56,6 +69,13 @@ pipeline {
         branch "dev"
       }
       steps {
+        sh '''
+           echo "Stopping all runnign containers"
+           docker kill $(docker container ls --filter ancestor=nodedev:v1.0 --format={{.ID}})
+           
+           echo "Removing all containers"
+           docker container rm $(docker container ls -a --filter ancestor=nodedev:v1.0 --format={{.ID}})
+        '''
         sh '''
           docker run -d -p 3001:3000 nodedev:v1.0
         '''
